@@ -1,10 +1,9 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const connectDb = async () =>{
     try{
-        const conn = await mongoose.connect(process.env.MONGO_URI,{
+        const conn = await mongoose.connect("mongodb+srv://raghav:raghav@raghav.jvmxdco.mongodb.net/?retryWrites=true&w=majority",{
             useNewUrlParser:true,
             useUnifiedTopology:true,
-            useFindAndModify:true
         });
         console.log(`MongoDB Connected: ${conn.connection.host}`)
     }catch(err){
