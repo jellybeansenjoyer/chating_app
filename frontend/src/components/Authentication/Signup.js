@@ -44,7 +44,7 @@ const Signup = () => {
         <FormControl id='password' isRequired>
             <FormLabel>Password</FormLabel>
                 <InputGroup>
-                <Input type={show?'password':'text'}
+                <Input type={show?'text':'password'}
                 placeholder="Enter your password" 
                 onChange={(e)=>{
                     setPassword(e.target.value)
@@ -59,7 +59,7 @@ const Signup = () => {
         <FormControl id='confirm-password' isRequired>
             <FormLabel>Confirm Password</FormLabel>
                 <InputGroup>
-                <Input type={show2?'password':'text'}
+                <Input type={show2?'text':'password'}
                 placeholder="Confirm your password" 
                 onChange={(e)=>{
                     setConfirmPassword(e.target.value)
