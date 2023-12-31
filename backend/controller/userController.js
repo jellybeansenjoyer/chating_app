@@ -1,8 +1,9 @@
-const asyncHandler = require('express-async-handler')
-const User = require('../model/userModel')
+const User = require('../models/usermodel');
+const generateToken = require('../config/generateToken');
+
 const registerUser = async ( req,res) => {
-    const { name, email,password, pic} = req.body;
-    if(!name || !email || !password || !pic){
+    const { name, email,password} = req.body;
+    if(!name || !email || !password){
         res.status(400);
         throw new Error("Please enter all the fields");
     }
@@ -14,8 +15,7 @@ const registerUser = async ( req,res) => {
     const user = await User.create({
         name,
         email,
-        password,
-        pic
+        password
     });
 
     if(user){
@@ -23,11 +23,11 @@ const registerUser = async ( req,res) => {
             _id:user._id,
             name:user.name,
             email:user.email,
-            pic:user.pic,
-        })
+            token:generateToken(user._id),
+        });
     }else{
         res.status(400);
-        throw new Error("Failed to create new user")
+        throw new Error("Failed to create new user");
     }
 }
 
