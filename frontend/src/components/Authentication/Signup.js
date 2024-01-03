@@ -1,10 +1,11 @@
 import { FormControl,FormLabel,Button,useToast } from '@chakra-ui/react'
 import {Input,InputGroup,InputRightElement} from '@chakra-ui/input'
 import { VStack } from '@chakra-ui/layout'
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 const Signup = () => {
+    const [pic,setPicture] = useState('a');
     const [show,setShow] = useState(true);
     const [show2,setShow2] = useState(true);
     const [name,setName] = useState('');
@@ -12,9 +13,9 @@ const Signup = () => {
     const [password,setPassword] = useState('');
     const [confirmPassword,setConfirmPassword] = useState('');
     const [isLoading,setIsLoading] = useState(false);
-    const [pic,setPic] = useState('');
     const toast = useToast();
     const history = useHistory();
+    
     const handleClick = ()=>{
         setShow(!show)
     }
@@ -43,7 +44,9 @@ const Signup = () => {
                 body:data,
             }).then((res)=>res.json()).then((data)=>{ 
                 console.log(data);
-                setPic(data.url.toString());
+                console.log(data.url);
+                // const value = data.url.toString();
+                setPicture(data.url);
                 setIsLoading(false);
                 }).catch((err)=>{
                     console.log(err);
@@ -92,6 +95,10 @@ const Signup = () => {
                     'Content-type':"application/json",
                 },
             };
+            while(pic==='a'){
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            console.log(pic)
             const {data} = await axios.post("/api/user",{
                 name,email,password,pic
             },config);
@@ -113,6 +120,7 @@ const Signup = () => {
                 isClosable:true,
                 position:"bottom",
                 });
+                console.log(err)
             setIsLoading(false);
         }
     }
