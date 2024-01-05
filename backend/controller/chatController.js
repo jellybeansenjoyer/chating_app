@@ -37,4 +37,12 @@ const accessChat = asyncHandler(async(req,res)=>{
         }
     }
 });
-module.exports = {accessChat}
+
+const fetchChats = asyncHandler(async(req,res)=>{
+    try{
+        Chat.find({users:{$elemMatch:{$eq:req.user._id}}}).then(result=>res.send(result))
+    }catch(err){
+
+    }
+})
+module.exports = {accessChat,fetchChats}
