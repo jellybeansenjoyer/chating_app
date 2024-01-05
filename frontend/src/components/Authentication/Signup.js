@@ -5,7 +5,7 @@ import React,{useEffect, useState} from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 const Signup = () => {
-    const [pic,setPicture] = useState('a');
+    const [pic,setPicture] = useState('');
     const [show,setShow] = useState(true);
     const [show2,setShow2] = useState(true);
     const [name,setName] = useState('');
@@ -95,9 +95,6 @@ const Signup = () => {
                     'Content-type':"application/json",
                 },
             };
-            while(pic==='a'){
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
             console.log(pic)
             const {data} = await axios.post("/api/user",{
                 name,email,password,pic
