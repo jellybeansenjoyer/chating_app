@@ -3,12 +3,14 @@ import { FormControl,FormLabel,InputRightElement,Button,useToast, useTab } from 
 import {Input,InputGroup} from '@chakra-ui/input'
 import {VStack} from '@chakra-ui/layout'
 import axios  from 'axios';
+import { useHistory } from 'react-router-dom';
 const Login = () => {
     const [show,setShow] = useState(false);
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [loading , setLoading] = useState(false);
     const toast = useToast();
+    const history = useHistory();
     const handleClick = ()=>{
         setShow(!show)
     }
@@ -43,6 +45,7 @@ const Login = () => {
                 position:"bottom",
                 });
                 localStorage.setItem('userInfo',JSON.stringify(data));
+                history.push('/chats');
                 setLoading(false);
         }catch(err){
             toast({
