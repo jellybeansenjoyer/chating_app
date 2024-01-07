@@ -1,4 +1,4 @@
-import { Tooltip  , Button, Box, Text, Menu, MenuButton, MenuDivider,MenuItem,MenuList, DrawerOverlay,Drawer,DrawerContent, DrawerBody} from '@chakra-ui/react';
+import { Tooltip  , Button, Box, Text, Menu, MenuButton, MenuDivider,MenuItem,MenuList, DrawerOverlay,DrawerHeader,Drawer,DrawerContent, DrawerBody,Input} from '@chakra-ui/react';
 import React,{useState} from 'react'
 import {BellIcon, ChevronDownIcon} from '@chakra-ui/icons';
 import {Avatar} from '@chakra-ui/avatar'
@@ -14,6 +14,9 @@ const SideDrawer = () => {
     const {user} = ChatState();
     const history = useHistory();
     const {isOpen,onOpen,onClose} = useDisclosure();
+    const handleSearch=()=>{
+
+    }
     const logoutHandler = ()=>{
         localStorage.removeItem("userInfo");
         history.push("/");
@@ -68,10 +71,20 @@ const SideDrawer = () => {
         </Box>
         <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
             <DrawerOverlay/>
-            <DrawerContent/>
-            <DrawerBody>
-                
-            </DrawerBody>
+            <DrawerContent>
+                <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
+                <DrawerBody>
+                <Box sx={{display:"flex"}} d="flex" pb={2}>
+                    <Input placeholder="Search by name or email"
+                            mr={2}
+                            value={search}
+                            onChange={(e)=>{
+                                setSearch(e.target.value)
+                            }}/>
+                    <Button onClick={handleSearch}>Go</Button>
+                </Box>
+            </DrawerBody>            
+            </DrawerContent>
         </Drawer>
         </>
     )
