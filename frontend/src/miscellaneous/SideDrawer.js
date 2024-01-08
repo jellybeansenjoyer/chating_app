@@ -1,4 +1,5 @@
 import { Tooltip  , Button, Box, Text, Menu, MenuButton, MenuDivider,MenuItem,MenuList, DrawerOverlay,DrawerHeader,Drawer,DrawerContent, DrawerBody,Input, useToast} from '@chakra-ui/react';
+import {Spinner} from '@chakra-ui/spinner';
 import React,{useState} from 'react'
 import {BellIcon, ChevronDownIcon} from '@chakra-ui/icons';
 import {Avatar} from '@chakra-ui/avatar'
@@ -14,36 +15,36 @@ const SideDrawer = () => {
     const [searchResult,setSearchResult] = useState([]);
     const [loading,setLoading] = useState(false);
     const [loadingChat,setLoadingChat] = useState(false);
-    const {user} = ChatState();
+    const {user,setSelectedChats,chats,setChats} = ChatState();
     const history = useHistory();
     const {isOpen,onOpen,onClose} = useDisclosure();
     const toast = useToast();
     const accessChat = async (userId)=>{
         console.log(userId)
-        // try{
-        //     setLoadingChat(true);
-        //     const config = {
-        //         headers:{
-        //             "Content-type":"application/json",
-        //             Authorization:`Bearer ${user.token}`
-        //         }
-        //     };
+        try{
+            setLoadingChat(true);
+            const config = {
+                headers:{
+                    "Content-type":"application/json",
+                    Authorization:`Bearer ${user.token}`
+                }
+            };
 
-        //     const {data} = await axios.post('/api/chat',{userId},config);
-        //     if(!chats.find((c)=>c._id===data._id)) setChats([data,...chats]);
-        //     setSelectedVChats(data);
-        //     setLoadingChat(false);
-        //     onClose();
-        // }catch(err){
-        //     toast({
-        //         title:"Error fetching the chat",
-        //         status:"warning",
-        //         description:err.message,
-        //         duration:5000,
-        //         isClosable:true,
-        //         posistion:"bottom-left"
-        //     });
-        // }
+            const {data} = await axios.post('/api/chat',{userId},config);
+            if(!chats.find((c)=>c._id===data._id)) setChats([data,...chats]);
+            setSelectedChats(data);
+            setLoadingChat(false);
+            onClose();
+        }catch(err){
+            toast({
+                title:"Error fetching the chat",
+                status:"warning",
+                description:err.message,
+                duration:5000,
+                isClosable:true,
+                posistion:"bottom-left"
+            });
+        }
     }
     const handleSearch=async ()=>{
         if(!search){
@@ -157,6 +158,7 @@ const SideDrawer = () => {
                         />
                     ))
                 )}
+                {loadingChat && <Spinner ml="auto" d="flex" />}
             </DrawerBody>            
             </DrawerContent>
         </Drawer>
