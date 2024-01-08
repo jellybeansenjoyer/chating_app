@@ -2,7 +2,6 @@ import { useDisclosure } from '@chakra-ui/hooks'
 import {
     Modal,
     ModalOverlay,
-    // useDisclosure,
     ModalContent,
     ModalHeader,
     ModalFooter,
@@ -12,10 +11,10 @@ import {
     ModalCloseButton,Button, useToast
   } from '@chakra-ui/react'
 import React,{useState} from 'react'
-// import {FormControl} from '@chakra-ui/form-control'
 import { ChatState } from '../Context/ChatProvider'
 import axios from 'axios'
 import UserListItem from '../UserAvatar/UserListItem'
+import UserBadgeItem from '../UserAvatar/UserBadgeItem'
 const GroupChatModal = ({children}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [groupChatName,setGroupChatName] = useState();
@@ -52,11 +51,27 @@ const GroupChatModal = ({children}) => {
             });
         }
     }
+    
     const handleSubmit = async ()=>{
 
     }
-    const handleGroup = async ()=>{
 
+    const handleDelete =  (delUser)=>{
+        setSelectedUsers(selectedUsers.filter((sel)=> sel._id!==delUser._id));
+    }
+
+    const handleGroup = (userToAdd)=>{
+        if(selectedUsers.includes(userToAdd)){
+            toast({
+                title:"User already added",
+                status:"warning",
+                duration:5000,
+                isClosable:true,
+                position:"top"
+            })
+            return;
+        }
+        setSelectedUsers([...selectedUsers,userToAdd]);
     }
    
     return (
@@ -76,12 +91,16 @@ const GroupChatModal = ({children}) => {
               <ModalCloseButton />
               <ModalBody d="flex" flexDir="column" alignItems="center">
                     <FormControl>
-                        <Input placeholder="Chat Name" mb={3} onChange={(e)=>{setGroupChatName(e.target.value)}}/>
+                        <Input placeholder="Chat Name" mb={3} onChange={(e)=>setGroupChatName(e.target.value)}/>
                     </FormControl>
                     <FormControl>
-                    <Input placeholder="Add Users eg: Raghav, Neha, Dhruv" mb={1} onChange={(e)=>{handleSearch(e.target.value)}}/>
+                    <Input placeholder="Add Users eg: Raghav, Neha, Dhruv" mb={1} onChange={(e)=>handleSearch(e.target.value)}/>
                     </FormControl>
-                    {/* selected users */}
+                    <Box sx={{display:"flex"}} w="100%" d="flex" flexWrap="wrap">
+                    {selectedUsers.map(u=>(
+                        <UserBadgeItem key={user._id} user={u} handleFunction={()=>handleDelete(u)}/>
+                    ))}
+                    </Box>
                     {loading?(<div>loading</div>):(
                         searchResult?.slice(0,4).map((user)=>(
                             <UserListItem key={user._id} user={user} handleFunction={()=>handleGroup(user)}/>
