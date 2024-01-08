@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import {useDisclosure} from '@chakra-ui/hooks'
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
+import UserListItem from '../UserAvatar/UserListItem';
 const SideDrawer = () => {
     const [search,setSearch] = useState("");
     const [searchResult,setSearchResult] = useState([]);
@@ -17,6 +18,33 @@ const SideDrawer = () => {
     const history = useHistory();
     const {isOpen,onOpen,onClose} = useDisclosure();
     const toast = useToast();
+    const accessChat = async (userId)=>{
+        console.log(userId)
+        // try{
+        //     setLoadingChat(true);
+        //     const config = {
+        //         headers:{
+        //             "Content-type":"application/json",
+        //             Authorization:`Bearer ${user.token}`
+        //         }
+        //     };
+
+        //     const {data} = await axios.post('/api/chat',{userId},config);
+        //     if(!chats.find((c)=>c._id===data._id)) setChats([data,...chats]);
+        //     setSelectedVChats(data);
+        //     setLoadingChat(false);
+        //     onClose();
+        // }catch(err){
+        //     toast({
+        //         title:"Error fetching the chat",
+        //         status:"warning",
+        //         description:err.message,
+        //         duration:5000,
+        //         isClosable:true,
+        //         posistion:"bottom-left"
+        //     });
+        // }
+    }
     const handleSearch=async ()=>{
         if(!search){
             toast({
@@ -32,7 +60,7 @@ const SideDrawer = () => {
             setLoading(true);
             const config = {
                 headers:{
-                    Authorization:`Bearer  ${user.token}`
+                    Authorization:`Bearer ${user.token}`      
                 }
             }
             const {data} = await axios.get(`/api/user?search=${search}`,config);
@@ -47,6 +75,7 @@ const SideDrawer = () => {
                 isClosable:true,
                 posistion:"top-left"
             });
+            console.log(error.message);
             return;
         }
     }
@@ -119,7 +148,14 @@ const SideDrawer = () => {
                 {loading ? (
                     <ChatLoading/>
                 ):(
-                    <span>results</span>
+                    // <span>results</span>
+                    searchResult?.map(user=>(
+                        <UserListItem
+                            key={user._id}
+                            user={user}
+                            handleFunction={()=>accessChat(user._id)}
+                        />
+                    ))
                 )}
             </DrawerBody>            
             </DrawerContent>
