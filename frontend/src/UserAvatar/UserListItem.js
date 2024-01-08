@@ -13,7 +13,7 @@ const UserListItem = ({user, handleFunction}) => {
             background:'#38B2AC',
             color:'white'
         }}
-        w="'100%"
+        w="100%"
         d="flex"
         alignItems="center"
         color="black"
@@ -30,7 +30,7 @@ const UserListItem = ({user, handleFunction}) => {
             <Box>
                 <Text>{user.name}</Text>
                 <Text fontSize="xs">
-                    <b>Email:</b>
+                    <b>Email: </b>
                     {user.email}
                 </Text>
             </Box>
