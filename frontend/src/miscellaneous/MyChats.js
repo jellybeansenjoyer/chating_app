@@ -1,10 +1,13 @@
 import React,{useEffect, useState} from 'react'
 import { ChatState } from '../Context/ChatProvider';
-import { Box, useToast } from '@chakra-ui/react';
+import { Box, Button, useToast,Text,Stack } from '@chakra-ui/react';
 import axios from 'axios';
+import { AddIcon } from '@chakra-ui/icons';
+import ChatLoading from './ChatLoading';
+import { getSender } from '../config/chatLogics';
 const MyChats = () => {
    const [loggedUser,setLoggedUser] = useState();
-   const {selectedChat, setSelectedChat,user,chats,setChats} = ChatState();
+   const {user,setUser,selectedChats,setSelectedChats,chats,setChats} = ChatState();
    const toast = useToast();
    const fetchChats = async() => {
     try {
@@ -33,7 +36,7 @@ const MyChats = () => {
         fetchChats();
    },[]);
    return (
-    <Box d = {{base:selectedChat?"none":"flex",md:"flex"}}
+    <Box d = {{base:selectedChats?"none":"flex",md:"flex"}}
          flexDir="column"
          alignItems="center"
          p={3}
@@ -42,6 +45,7 @@ const MyChats = () => {
          borderRadius="lg"
          borderWidth="1px">
     <Box
+        sx={{display:"flex"}}
         pb={3}
         px={3}
         fontSize={{base:"28px" , md:"30px"}}
@@ -52,6 +56,45 @@ const MyChats = () => {
         alignItems="center"
     >
         MyChats
+        <Button d="flex" fontSize={{base:"17px" ,md:"10px", lg:"17px"}}
+            rightIcon={<AddIcon />}>
+                New Group Chat
+            </Button>
+    </Box>
+    <Box
+        d="flex"
+        flexDir="column"
+        p={3}
+        bg="#F8F8F8"
+        w="100%"
+        h="100%"
+        borderRadius="lg"
+        overflowX="hidden"
+    >
+        {
+            chats?(
+                <Stack overflowY='scroll'>
+                    {chats.map((chats)=>(
+                        <Box
+                            onClick={()=>setSelectedChats(chats)}
+                            cursor="pointer"
+                            bg={selectedChats===chats?"#38B2AC":"#E8E8E8"}
+                            color={selectedChats===chats?"white":"black"}
+                            px={3}
+                            py={2}
+                            borderRadius="lg"
+                            key={chats._id}
+                        >
+                            <Text>
+                                {!chats.isGroupChat?(getSender(loggedUser,chats.users)):(chats.chatName)}
+                            </Text>
+                        </Box>
+                    ))}
+                </Stack>
+            ):(
+                <ChatLoading/>
+            )
+        }
     </Box>
     </Box>
   )
