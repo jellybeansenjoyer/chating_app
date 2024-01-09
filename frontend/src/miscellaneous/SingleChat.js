@@ -4,7 +4,7 @@ import { Box,IconButton,Text } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender , getSenderFull } from '../config/chatLogics';
 import ProfileModal from './ProfileModal';
-
+import UpdateGroupChatModel from './UpdateGroupChatModel';
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const {user,selectedChats,setSelectedChats} = ChatState();
   return (
@@ -33,16 +33,29 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
             ):(
                 <>
                {selectedChats.chatName.toUpperCase()}
-                {/* <UpdateGroupChatModel fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} /> */} 
+                <UpdateGroupChatModel fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} /> 
                 </>
             )}
                         </Text>
+                        <Box
+                        flexDir="column"
+                        sx={{display:'flex'}}
+                        d="flex"
+                        p={3}
+                        bg="#E8E8E8"
+                        w='100%'
+                        h='90%'
+                        borderRadius="lg"
+                    >
+                        Messages Here
+                    </Box>
                 </>
             ):(
                 <Box sx={{display:'flex'}} d="flex" alignItems="center" justifyContent="center" h="100%">
                     <Text fontSize="3xl" pb={3} fontFamily="Work sans">
                         Click on a user to start chatting
                     </Text>
+                    
                 </Box>
             )
         }
