@@ -15,6 +15,7 @@ import {
     useToast,
     FormControl,
   } from '@chakra-ui/react'
+import axios from 'axios';
 import { ViewIcon } from '@chakra-ui/icons';
 import { ChatState } from '../Context/ChatProvider';
 import UserBadgeItem from '../UserAvatar/UserBadgeItem';
@@ -30,8 +31,37 @@ const UpdateGroupChatModel = ({fetchAgain,setFetchAgain}) => {
     const handleRemove = () => {
 
     };
-    const handleRename = () => {
+    const handleRename = async () => {
+        setRenameLoading(true);
+        if(!groupChatName){
+            return;
+        }
 
+        try{
+            const config = {
+            headers:{
+                Authorization:`Bearer ${user.token}`
+            }
+        }
+        const {data} = await axios.put('/api/chat/rename',{
+            chatId:selectedChats._id,
+            chatName:groupChatName
+        },config);
+        setSelectedChats(data);
+        setFetchAgain(!fetchAgain);
+        setRenameLoading(false);
+        } catch (error) {
+            toast({
+                title:"Error Occured!",
+                description:error.response.data.message,
+                status:"warning",
+                duration:5000,
+                isClosable:true,
+                position:"top-left"
+            });
+            setRenameLoading(false);
+        }
+        setGroupChatName("");
     };
     const handleSearch = () => {
 
