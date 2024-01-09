@@ -28,7 +28,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
             {!selectedChats.isGroupChat?(
                 <>{getSender(user,selectedChats.users)}
-                  <ProfileModal user={getSender(user,selectedChats.users)}/>
+                  <ProfileModal user={getSenderFull(user,selectedChats.users)}/>
                 </>
             ):(
                 <>
