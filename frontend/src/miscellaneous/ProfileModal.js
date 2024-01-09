@@ -21,7 +21,7 @@ const ProfileModal = ({user,children}) => {
         {children ? (
             <span onClick={onOpen}>{children}</span>
         ) : (
-            <IconButton d={{base:"flex"}} icon={<ViewIcon/>} onClick={onOpen} />
+            <IconButton sx={{display:{base:'flex'}}} d={{base:"flex"}} icon={<ViewIcon/>} onClick={onOpen} />
         )}
         <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
