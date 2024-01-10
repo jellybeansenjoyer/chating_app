@@ -7,6 +7,8 @@ import ProfileModal from './ProfileModal';
 import UpdateGroupChatModel from './UpdateGroupChatModel';
 import axios from 'axios';
 import io from 'socket.io-client';
+import Lottie from "react-lottie";
+import animationData from '../animations/typing.json'
 import './style.css'
 import ScrollableChat from './ScrollableChat';
 const ENDPOINT = "http://localhost:5000";
@@ -18,6 +20,14 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const [messages,setMessages] = useState([]);
   const [newMessage,setNewMessage] = useState();
   const [loading,setLoading] = useState(false);
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   useEffect(()=>{
     socket = io(ENDPOINT)
     socket.emit("setup",user);
@@ -199,7 +209,12 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
             >
                 {istyping ? (
                 <div>
-                  isLoading...
+                    <Lottie
+                    options={defaultOptions}
+                    // height={50}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  />
                 </div>
               ) : (
                 <></>
