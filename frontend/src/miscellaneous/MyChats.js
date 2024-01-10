@@ -78,19 +78,19 @@ const MyChats = ({fetchAgain,setFetchAgain}) => {
         {
             chats?(
                 <Stack overflowY='scroll'>
-                    {chats.map((chats)=>(
+                    {chats.map((chat)=>(
                         <Box
-                            onClick={()=>setSelectedChats(chats)}
+                            onClick={()=>setSelectedChats(chat)}
                             cursor="pointer"
-                            bg={selectedChats===chats?"#38B2AC":"#E8E8E8"}
-                            color={selectedChats===chats?"white":"black"}
+                            bg={selectedChats===chat?"#38B2AC":"#E8E8E8"}
+                            color={selectedChats===chat?"white":"black"}
                             px={3}
                             py={2}
                             borderRadius="lg"
-                            key={chats._id}
+                            key={chat._id}
                         >
                             <Text>
-                                {!chats.isGroupChat?(getSender(loggedUser,chats.users)):(chats.chatName)}
+                                {!chats.isGroupChat?(getSender(loggedUser,chat.users)):(chat.chatName)}
                             </Text>
                         </Box>
                     ))}
