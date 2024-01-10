@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ChatState } from '../Context/ChatProvider'
-import { Box,IconButton,Text } from '@chakra-ui/react';
+import { Box,IconButton,Spinner,Text } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender , getSenderFull } from '../config/chatLogics';
 import ProfileModal from './ProfileModal';
 import UpdateGroupChatModel from './UpdateGroupChatModel';
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const {user,selectedChats,setSelectedChats} = ChatState();
+  const [messages,setMessages] = useState([]);
+  const [nweMessages,setNewMessages] = useState();
+  const [loading,setLoading] = useState(false);
+  
   return (
     <>
         {
@@ -47,7 +51,15 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
                         h='90%'
                         borderRadius="lg"
                     >
-                        Messages Here
+                        {!loading?(<Spinner 
+                            size="xl"
+                            w={20}
+                            h={20}
+                            alignSelf="center"
+                            margin="auto"
+                        />):(
+                            <></>
+                        )}
                     </Box>
                 </>
             ):(
