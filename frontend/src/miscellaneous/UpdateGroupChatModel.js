@@ -21,7 +21,7 @@ import { ViewIcon } from '@chakra-ui/icons';
 import { ChatState } from '../Context/ChatProvider';
 import UserBadgeItem from '../UserAvatar/UserBadgeItem';
 import UserListItem from '../UserAvatar/UserListItem';
-const UpdateGroupChatModel = ({fetchAgain,setFetchAgain}) => {
+const UpdateGroupChatModel = ({fetchAgain,setFetchAgain,fetchMessages}) => {
     const {isOpen,onOpen,onClose} = useDisclosure();
     const [groupChatName,setGroupChatName] = useState();
     const [search,setSearch]  = useState("");
@@ -53,6 +53,7 @@ const UpdateGroupChatModel = ({fetchAgain,setFetchAgain}) => {
             },config);
             user1._id === user._id ? setSelectedChats() :setSelectedChats(data);
             setFetchAgain(!fetchAgain);
+            fetchMessages();
             setLoading(false);
         } catch (error) {
             toast({
