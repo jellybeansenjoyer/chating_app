@@ -12,17 +12,20 @@ import ScrollableChat from './ScrollableChat';
 const ENDPOINT = "http://localhost:5000";
 var socket,selectedChatCompare;
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
-  const [scoketConnected,setSocketConnected] = useState(false)
-  const {user,selectedChats,setselectedChats} = ChatState();
+  const [socketConnected,setSocketConnected] = useState(false)
+  const [typing, setTyping] = useState(false);
+  const [istyping, setIsTyping] = useState(false);const {user,selectedChats,setselectedChats} = ChatState();
   const [messages,setMessages] = useState([]);
   const [newMessage,setNewMessage] = useState();
   const [loading,setLoading] = useState(false);
   useEffect(()=>{
     socket = io(ENDPOINT)
     socket.emit("setup",user);
-    socket.on("connnection",()=>{
+    socket.on("connected",()=>{
         setSocketConnected(true);
     })
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
   },[]);
   const fetchMessages = async ()=>{
         if(!selectedChats) return;
@@ -53,8 +56,24 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   }
   
   const typingHandler = (e) => {
-        setNewMessage(e.target.value);
-        //typing indicator logic
+    setNewMessage(e.target.value);
+    console.log("assfdasfd");
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChats._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChats._id);
+        setTyping(false);
+      }
+    }, timerLength);
   };
   const toast = useToast();
   useEffect(()=>{
@@ -73,6 +92,8 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   
   const sendMessage = async (e)=>{
     if(e.key==="Enter" && newMessage){
+        
+      socket.emit("stop typing", selectedChats._id);
         try {
             const config = {
                 headers: {
@@ -176,6 +197,13 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
               isRequired
               mt={3}
             >
+                {istyping ? (
+                <div>
+                  isLoading...
+                </div>
+              ) : (
+                <></>
+              )}
             <Input
                 variant="filled"
                 bg="#E0E0E0"
