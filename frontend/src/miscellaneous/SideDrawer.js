@@ -42,7 +42,7 @@ const SideDrawer = () => {
                 description:err.message,
                 duration:5000,
                 isClosable:true,
-                posistion:"bottom-left"
+                position:"bottom-left"
             });
         }
     }
