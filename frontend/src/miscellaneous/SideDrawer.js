@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import {useDisclosure} from '@chakra-ui/hooks'
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
+import NotificationBadge, { Effect } from 'react-notification-badge'
 import UserListItem from '../UserAvatar/UserListItem';
 import { getSender } from '../config/chatLogics';
 const SideDrawer = () => {
@@ -114,6 +115,10 @@ const SideDrawer = () => {
             <div>
                 <Menu>
                     <MenuButton p={1}>
+                        <NotificationBadge
+                            count={notification.length}
+                            effect = {Effect.SCALE}
+                        />
                         <BellIcon fontSize="2xl" m={1}/>
                     </MenuButton>
                     <MenuList>
