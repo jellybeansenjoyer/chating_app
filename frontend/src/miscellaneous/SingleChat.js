@@ -6,15 +6,20 @@ import { getSender , getSenderFull } from '../config/chatLogics';
 import ProfileModal from './ProfileModal';
 import UpdateGroupChatModel from './UpdateGroupChatModel';
 import axios from 'axios';
+import io from 'socket.io-client';
 import './style.css'
 import ScrollableChat from './ScrollableChat';
+const ENDPOINT = "http://localhost:5000";
+var socket,selectedChatCompare;
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
     
   const {user,selectedChats,setselectedChats} = ChatState();
   const [messages,setMessages] = useState([]);
   const [newMessage,setNewMessage] = useState();
   const [loading,setLoading] = useState(false);
-  
+  useEffect(()=>{
+    socket = io(ENDPOINT)
+  },[]);
   const fetchMessages = async ()=>{
         if(!selectedChats) return;
 

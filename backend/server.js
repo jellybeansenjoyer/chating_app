@@ -28,6 +28,6 @@ const io = require('socket.io')(server,{
     }
 });
 
-io.on("connection",()=>{
-    console.log("Connected to socket.io");
+io.on("connection",(socket)=>{
+    console.log("Connected to socket.io".yellow.bold);
 })
