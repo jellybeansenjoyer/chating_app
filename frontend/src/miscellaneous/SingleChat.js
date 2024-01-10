@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider'
 import { Box,FormControl,IconButton,Input,Spinner,Text, Toast, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
@@ -12,11 +12,35 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const [messages,setMessages] = useState([]);
   const [newMessage,setNewMessage] = useState();
   const [loading,setLoading] = useState(false);
+  
+  const fetchMessages = async ()=>{
+        if(!selectedChats) return;
+
+        try {
+            const config = {
+                headers: {
+                    Authorization:`Bearer ${user.token}`
+                }
+            };
+
+            setLoading(true);
+            const {data} = await axios.get(`/api/message/${selectedChats._id}`,config);
+            console.log(messages);
+            setMessages(data);
+            setLoading(false);
+        } catch (error) {
+            
+        }
+  }
+  
   const typingHandler = (e) => {
         setNewMessage(e.target.value);
         //typing indicator logic
   };
   const toast = useToast();
+  useEffect(()=>{
+    fetchMessages();
+  },[selectedChats]);
   const sendMessage = async (e)=>{
     if(e.key==="Enter" && newMessage){
         try {
