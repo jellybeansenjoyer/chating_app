@@ -16,7 +16,8 @@ var socket,selectedChatCompare;
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const [socketConnected,setSocketConnected] = useState(false)
   const [typing, setTyping] = useState(false);
-  const [istyping, setIsTyping] = useState(false);const {user,selectedChats,setselectedChats} = ChatState();
+  const [istyping, setIsTyping] = useState(false);
+  const {user,selectedChats,setSelectedChats,notification,setNotification} = ChatState();
   const [messages,setMessages] = useState([]);
   const [newMessage,setNewMessage] = useState();
   const [loading,setLoading] = useState(false);
@@ -90,12 +91,14 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
     fetchMessages();
     selectedChatCompare = selectedChats;
   },[selectedChats]);
-
+  console.log(notification,"------------------")
   useEffect(()=>{
     socket.on('message recieved',(newMessageRecieved=>{
         if(!selectedChatCompare || selectedChatCompare._id!==newMessageRecieved.chat._id){
-            //give notification
-        }else{
+            if(!notification.includes(newMessageRecieved))
+                setNotification([newMessageRecieved,...notification])
+                setFetchAgain(!fetchAgain);
+            }else{
             setMessages([...messages,newMessageRecieved])
         }
     }))})
@@ -153,7 +156,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
                 base:'flex'
               }}}
               icon={<ArrowBackIcon />}
-              onClick={() => setselectedChats("")}
+              onClick={() => setSelectedChats("")}
             />
             {messages &&
               (!selectedChats.isGroupChat ? (
