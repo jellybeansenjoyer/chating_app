@@ -15,7 +15,7 @@ const SideDrawer = () => {
     const [searchResult,setSearchResult] = useState([]);
     const [loading,setLoading] = useState(false);
     const [loadingChat,setLoadingChat] = useState(false);
-    const {user,setSelectedChats,chats,setChats} = ChatState();
+    const {setSelectedChats,chats,setChats,user} = ChatState();
     const history = useHistory();
     const {isOpen,onOpen,onClose} = useDisclosure();
     const toast = useToast();

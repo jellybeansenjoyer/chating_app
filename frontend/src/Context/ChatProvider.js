@@ -1,7 +1,6 @@
 import {createContext,useState,useEffect,useContext} from 'react';
 import { useHistory } from 'react-router-dom';
 const ChatContext = createContext();
-
 const ChatProvider = ({children}) => {
     const [user,setUser] = useState();
     const [selectedChats,setSelectedChats] = useState();
@@ -11,7 +10,8 @@ const ChatProvider = ({children}) => {
        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         setUser(userInfo);
         if(!userInfo){
-            history.push('/');
+            // history.push('/');
+            localStorage.getItem("userInfo")
         }
     },[history]);
     return <ChatContext.Provider value={{user,setUser,selectedChats,setSelectedChats,chats,setChats}}>
