@@ -12,13 +12,17 @@ import ScrollableChat from './ScrollableChat';
 const ENDPOINT = "http://localhost:5000";
 var socket,selectedChatCompare;
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
-    
+  const [scoketConnected,setSocketConnected] = useState(false)
   const {user,selectedChats,setselectedChats} = ChatState();
   const [messages,setMessages] = useState([]);
   const [newMessage,setNewMessage] = useState();
   const [loading,setLoading] = useState(false);
   useEffect(()=>{
     socket = io(ENDPOINT)
+    socket.emit("setup",user);
+    socket.on("connnection",()=>{
+        setSocketConnected(true);
+    })
   },[]);
   const fetchMessages = async ()=>{
         if(!selectedChats) return;
@@ -36,7 +40,14 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
             setMessages(data);
             setLoading(false);
         } catch (error) {
-            
+            toast({
+                title:"Error occured!",
+                status:"error",
+                description:"Failed to send the messages",
+                duration:5000,
+                isClosable:true,
+                position:"bottom"
+            });     
         }
   }
   
