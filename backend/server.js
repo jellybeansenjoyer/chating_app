@@ -20,4 +20,14 @@ app.use(notFound)
 app.use(errorHandler)
 const PORT = process.env.PORT || 4000
 
-app.listen(PORT, console.log(`Server started at PORT ${PORT}`.yellow.bold))
+const server = app.listen(PORT, console.log(`Server started at PORT ${PORT}`.yellow.bold))
+const io = require('socket.io')(server,{
+    pingTimeout:60000,
+    cors:{
+        origin:"http://localhost:3000",
+    }
+});
+
+io.on("connection",()=>{
+    console.log("Connected to socket.io");
+})
